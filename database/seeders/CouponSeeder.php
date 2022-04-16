@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Coupon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class CouponSeeder extends Seeder
 {
@@ -14,6 +15,8 @@ class CouponSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Coupon::factory()
+            ->count(10)
+            ->create();
     }
 }
