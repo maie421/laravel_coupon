@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserCouponController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,5 +23,6 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::apiResource('posts',PostController::class);
 Route::apiResource('post_comments', PostCommentController::class);
+Route::apiResource('user_coupons', UserCouponController::class);
 
 require __DIR__.'/auth.php';

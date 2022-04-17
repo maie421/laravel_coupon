@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserCouponRequest;
+use App\Http\Resources\UserCouponResource;
 use App\Models\UserCoupon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserCouponController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index(): AnonymousResourceCollection
     {
-        //
+        $posts = UserCoupon::all();
+        return UserCouponResource::collection($posts);
     }
 
     /**
@@ -27,15 +27,10 @@ class UserCouponController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(StoreUserCouponRequest $request): UserCouponResource
     {
-        //
+        $user_coupon = UserCoupon::create($request->validated());
+        return new UserCouponResource($user_coupon);
     }
 
     /**
