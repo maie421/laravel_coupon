@@ -7,6 +7,7 @@ use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -47,7 +48,11 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+
+       $posts = Post::with('postComments')
+                ->find($id);
+       var_dump($posts);
+       return new PostResource($posts);
     }
 
     /**
