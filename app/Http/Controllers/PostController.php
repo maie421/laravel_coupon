@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
+use App\Http\Resources\PostResource;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -9,11 +12,12 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
-        //
+        $posts = Post::all();
+        return PostResource::collection($posts);
     }
 
     /**
@@ -30,11 +34,14 @@ class PostController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return PostResource
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        //
+        $posts = Post::create($request->all());
+
+        return new PostResource($posts);
+
     }
 
     /**
