@@ -1,39 +1,33 @@
-name: Laravel CI
-
-on:
-  pull_request:
-    branches: [ master, staging ]
-
+on: push
+name: CI
 jobs:
-  laravel-tests:
-
+  phpunit:
     runs-on: ubuntu-latest
-
+    container:
+      image: kirschbaumdevelopment/laravel-test-runner:8.1 
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: test
+        ports:
+          - 33306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+ 
     steps:
-    - uses: actions/checkout@v2
-    - name: Copy .env.example to .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+ 
     - name: Install composer dependencies
-      run: composer install
-    - name: Set required directory permissions
-      run: chmod -R 777 storage bootstrap/cache
-    - name: Generate encryption key
-      run: php artisan key:generate
-    - name: Create temporary sqlite database
       run: |
-        mkdir -p database
-        touch database/database.sqlite
-    - name: Run laravel database migrations
-      env:
-        DB_CONNECTION: sqlite
-        DB_DATABASE: database/database.sqlite
-      run: php artisan migrate --force
-    - name: Install NPM dependencies
-      run: npm install
-    - name: Minify CSS and JS files
-      run: npm run prod
-    - name: Run unit tests via PHPUnit
-      env:
-        DB_CONNECTION: sqlite
-        DB_DATABASE: database/database.sqlite
-      run: ./vendor/bin/phpunit
+        composer install --no-scripts
+ 
+    - name: Prepare Laravel Application
+      run: |
+        cp .env.ci .env
+        php artisan key:generate
+ 
+    - name: Run Testsuite
+      run: vendor/bin/phpunit tests/
