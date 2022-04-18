@@ -13,11 +13,6 @@ use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return AnonymousResourceCollection
-     */
     public function index(): AnonymousResourceCollection
     {
         $posts = Post::all();
