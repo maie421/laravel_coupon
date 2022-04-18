@@ -29,6 +29,9 @@ class UserCouponController extends Controller
 
     public function store(StoreUserCouponRequest $request): UserCouponResource
     {
+        // 이미 해당 쿠폰이 존재 X
+        // 댓글에 특정 단어가 들어갈것
+
         $user_coupon = UserCoupon::create($request->validated());
         return new UserCouponResource($user_coupon);
     }
